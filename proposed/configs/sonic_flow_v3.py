@@ -1,0 +1,89 @@
+"""Sonic flow temporal retraining - variant 3: lower LR, more epochs, gradient-friendly config."""
+import torch
+from configs.sonic_flow import get_config_spatial
+
+def get_config_temporal():
+    spatial_config = get_config_spatial()
+    return {
+        'device': spatial_config['device'],
+        'save_dir': './checkpoints-sonic-flow-spectral-clustering',
+        'field_data_path': spatial_config['field_data_path'],
+        'input_path': spatial_config['input_path'],
+        'coordinates_path': spatial_config['coordinates_path'],
+        'static_mesh': True,
+
+        'train_fraction': 0.6,
+        'val_fraction': 0.2,
+        'random_seed': 42,
+
+        'dimension': spatial_config['dimension'],
+        'field_groups': spatial_config['field_groups'],
+        'scale_feature_range': spatial_config['scale_feature_range'],
+        'use_quantiles': spatial_config['use_quantiles'],
+        'q_low': spatial_config['q_low'],
+        'q_high': spatial_config['q_high'],
+        'log_mode': spatial_config['log_mode'],
+        'slog_scale': spatial_config['slog_scale'],
+        'scaler_eps': spatial_config['scaler_eps'],
+        'csv_scale_name': spatial_config['csv_scale_name'],
+        'm': spatial_config['m'],
+        'n': spatial_config['n'],
+        'k': spatial_config['k'],
+        'pad_id': spatial_config['pad_id'],
+        'pad_field_value': spatial_config['pad_field_value'],
+
+        'MLP_hidden_spatial': spatial_config['MLP_hidden'],
+        'num_layers_spatial': spatial_config['num_layers'],
+        'embed_dim_spatial': spatial_config['embed_dim'],
+        'n_heads_spatial': spatial_config['n_heads'],
+        'block_size_spatial': spatial_config['block_size'],
+        'dropout_spatial': spatial_config['dropout'],
+        'variational_spatial': spatial_config['variational'],
+        'src_len_spatial': spatial_config['src_len'],
+        'encoder_decoder_path': f"{spatial_config['save_dir']}/encoder_decoder_{spatial_config['case_name']}_{spatial_config['run_name']}.pt",
+        'spatial_batch_size': spatial_config['batch_size'],
+
+        'num_layers': 1,
+        'embed_dim': 768,
+        'n_heads': 8,
+        'block_size': 2024,
+        'scale_ratio': 8,
+        'src_len': 0,
+        'num_fields': len(spatial_config['field_groups']),
+        'down_proj': 2,
+        'dropout': 0.05,
+        'exchange_mode': 'sea',
+        'pos_encoding_mode': 'learnable',
+        'ib_scale_mode': 'mlp',
+        'ib_addition_mode': 'add',
+        'ib_mlp_layers': 1,
+        'ib_num': 1,
+        'add_info_after_cross': True,
+        'LN_type': 'adaln',
+
+        'test_mesh_structure': False,
+        'perform_initial_test': True,
+
+        'validation_interval': 10,
+        'full_eval_interval': 100,
+        'final_save': False,
+
+        'batch_size': 4,
+        'dataset_src_len': 39,
+        'dataset_overlap': 0,
+        'dataset_time_shifting_flag': False,
+
+        'variational': False,
+        'learning_rate': 5e-5,
+        'KL_weight_min': 0,
+        'KL_weight_max': 0,
+        'epoch_num': 5000,
+
+        'use_wandb': False,
+        'run_name': 'run3',
+        'case_name': 'sonic_flow',
+        'project_name': 'spectralformer_temporal',
+
+        'SEA_isolate': spatial_config['SEA_isolate'],
+        'SEA_mixed': spatial_config['SEA_mixed']
+    }

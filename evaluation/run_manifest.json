@@ -1,0 +1,1219 @@
+{
+  "schema_version": 1,
+  "manifest_name": "GraphSpectralFormer LoG 2026 evidence registry",
+  "generated_at_utc": "2026-07-28T08:35:00Z",
+  "sensitive_value_policy": "Authentication values are intentionally omitted. W&B paths are local provenance pointers only.",
+  "metric_definitions": {
+    "historical_relative_mse": "Repository relativeMSE: sum((prediction-truth)^2) / (sum(truth^2)+1e-8); despite historical slide labels, this is relative squared L2, not RMSE.",
+    "standard_relative_squared_l2": "For each trajectory, forecast step, and field: sum_nodes((prediction-truth)^2) / max(sum_nodes(truth^2),1e-12).",
+    "standard_relative_l2": "Square root of standard_relative_squared_l2 before aggregation.",
+    "standard_raw_rmse": "For each trajectory, forecast step, and field: sqrt(mean_nodes((prediction-truth)^2)).",
+    "standard_macro": "Arithmetic mean of field-wise metrics; spatial nodes are reduced first, then every test trajectory and forecast step is included.",
+    "uncertainty": "Percentile 95% confidence interval from seed-42 bootstrap resampling of whole test trajectories."
+  },
+  "curve_export_audit": {
+    "path": "./log-specatraformer-submission/experiments/results/cylinder_curve_export_audit.json",
+    "sha256": "c11dcc48f72856ffcb03494f917b5a935409621fa582683ebf378443ae045cf8"
+  },
+  "conditioning_recipes": {
+    "cylinder_re_nu_polynomial_v1": {
+      "id": "cylinder_re_nu_polynomial_v1",
+      "kind": "source_derived_in_memory",
+      "source_path": "train/train_temporal.py",
+      "sources": [
+        {
+          "repository": "./SEA",
+          "revision": "00bb57f53cc7a16194fe47422b994a54420275f1",
+          "lines": [39, 47]
+        },
+        {
+          "repository": "./SEA",
+          "revision": "9633fc663ba649b42da7fe08a49a68dc7998fac7",
+          "lines": [39, 47]
+        }
+      ],
+      "trajectory_count": 101,
+      "reynolds": {
+        "construction": "numpy.linspace",
+        "start": 300,
+        "stop": 1000,
+        "count": 101
+      },
+      "powers": [1, 2, 3],
+      "column_order": ["Re^1", "nu^1", "Re^2", "nu^2", "Re^3", "nu^3"],
+      "normalization": "divide each powered column by its own maximum",
+      "inverse_definition": "nu = 1 / Re",
+      "dtype": "float32",
+      "output_features": 6,
+      "sha256_float32_c_order": "36a1c08c42b899f47112f7fd1c68bfcd7272779e1f2c5e19a5992cccdec84556",
+      "persistence": "never written; generated in worker memory only"
+    }
+  },
+  "data_assets": {
+    "cylinder_legacy_101x401": {
+      "field_data": {
+        "path": "./SEA/data_old/CF/all_data/field_data.npy",
+        "sha256": "bc93a3514b0611a98fef3f8638361e45286f9410f89446dce245648195bd5695",
+        "shape": [101, 401, 1699, 3],
+        "dtype": "float64",
+        "historical_location": "./data/CF/all_data/field_data.npy",
+        "compatibility": "shape matches historical W&B logs"
+      },
+      "input_data": {
+        "path": "./SEA/data_old/CF/all_data/input_data.npy",
+        "sha256": "0f72c00a53a48111292365c6986ed4b0e054be41d83b510a4409cb713254ddc8",
+        "shape": [101, 1],
+        "dtype": "float64",
+        "historical_shape": [101, 6],
+        "historical_location": "./data/CF/all_data/input_data.npy",
+        "compatibility": "archival mismatch retained for audit; canonical cylinder runtime conditioning is reconstructed exactly from the cited source recipe and does not read this file for values"
+      },
+      "coordinates": {
+        "path": "./SEA/data_old/CF/all_data/coordinates.npy",
+        "sha256": "93ed8ab711f2c88c363d4b164036780fd109e6e6aeac5b75356ba3334e21079a",
+        "shape": [2, 1699],
+        "dtype": "float64",
+        "historical_location": "./data/CF/all_data/coordinates.txt",
+        "compatibility": "binary mirror exists; historical text file is absent"
+      },
+      "edges": {
+        "path": "./SEA/data_old/CF/all_data/edge_data.npz",
+        "sha256": "931efd5243a1b52608562ce08fb19c045b14942648f13e6b304dcd0aa81f63fd",
+        "arrays": {
+          "edge_index": [2, 4954],
+          "edge_attr": [4954, 3]
+        }
+      },
+      "global_fourier_basis": {
+        "path": "./mesh_operator/U.pt",
+        "sha256": "4b830db6d35368cbda496eb577e4c89db812b9b3b10a9718c79457f5e84bbb74",
+        "shape": [1699, 1699],
+        "dtype": "float32",
+        "historical_location": "./data/CF/all_data/U.pt",
+        "coordinate_alignment": "mesh_operator/dataset/meshPosition_all.txt is byte-identical to the archived cylinder mesh and numerically identical to coordinates.npy transposed"
+      }
+    },
+    "multiphase_40x200": {
+      "field_data": {
+        "path": "./SEA-baseline/data/MP/all_data/field_data.npy",
+        "sha256": "af1249d563d129f23b8f94420dfaa9973eb818d7b31f3aecb0529b9c63e11244",
+        "shape": [40, 200, 8241, 3],
+        "dtype": "float64",
+        "historical_location": "./data/MP/all_data/field_data.npy",
+        "compatibility": "matches canonical and fallback W&B shapes"
+      },
+      "input_data": {
+        "path": "./SEA-baseline/data/MP/all_data/input_data.npy",
+        "sha256": "aef54ce0df55bd621da133a65d4ab07b9f37d979f4439324ec706578d39e559c",
+        "shape": [40, 200, 1],
+        "dtype": "float64",
+        "historical_location": "./data/MP/all_data/input_data.npy",
+        "compatibility": "matches canonical and fallback configuration"
+      },
+      "coordinates": {
+        "path": "./SEA-baseline/data/MP/all_data/coordinates.npy",
+        "sha256": "d03b1e084d3ec94a14f28e8184d93cfd9836451344d5d0b70fae8ce26fe7efdf",
+        "shape": [2, 8241],
+        "dtype": "float64",
+        "historical_location": "./data/MP/all_data/coordinates.npy",
+        "compatibility": "matches canonical and fallback configuration"
+      }
+    },
+    "sonic_101x40": {
+      "field_data": {
+        "path": "./SEA-baseline/data/SF/all_data/field_data.npy",
+        "shape": [101, 40, 1900, 8],
+        "dtype": "float64",
+        "historical_location": "./data/SF/all_data/field_data.npy"
+      },
+      "input_data": {
+        "path": "./SEA-baseline/data/SF/all_data/input_data.npy",
+        "shape": [101],
+        "effective_shape_after_loader": [101, 1],
+        "dtype": "float64",
+        "historical_location": "./data/SF/all_data/input_data.npy"
+      },
+      "coordinates": {
+        "path": "./SEA-baseline/data/SF/all_data/coordinates.npy",
+        "shape": [2, 1900],
+        "dtype": "float64",
+        "historical_location": "./data/SF/all_data/coordinates.npy"
+      },
+      "edges": {
+        "path": "./SEA-baseline/data/SF/all_data/edge_data.npz",
+        "arrays": {
+          "edge_index": [2, 7330],
+          "edge_attr": [40, 7330, 3]
+        }
+      }
+    }
+  },
+  "splits": {
+    "cylinder_seed42_60_20_20": {
+      "unit": "trajectory",
+      "seed": 42,
+      "train_fraction": 0.6,
+      "validation_fraction": 0.2,
+      "test_fraction": 0.2,
+      "rounding": "numpy round then remainder to test",
+      "train_indices": [84, 55, 66, 67, 45, 39, 22, 44, 10, 0, 18, 30, 97, 33, 77, 4, 93, 78, 12, 31, 76, 89, 26, 42, 70, 15, 40, 72, 9, 96, 11, 91, 64, 28, 83, 5, 47, 53, 35, 16, 81, 34, 7, 43, 73, 27, 19, 94, 25, 62, 49, 13, 24, 3, 17, 38, 8, 79, 6, 65, 36],
+      "validation_indices": [88, 56, 100, 54, 50, 68, 46, 69, 61, 98, 80, 41, 58, 48, 90, 57, 75, 32, 95, 59],
+      "test_indices": [63, 85, 37, 29, 1, 52, 21, 2, 23, 87, 99, 74, 86, 82, 20, 60, 71, 14, 92, 51]
+    },
+    "multiphase_seed42_60_20_20": {
+      "unit": "trajectory",
+      "seed": 42,
+      "train_fraction": 0.6,
+      "validation_fraction": 0.2,
+      "test_fraction": 0.2,
+      "rounding": "numpy round then remainder to test",
+      "train_indices": [19, 16, 15, 26, 4, 12, 37, 27, 39, 6, 25, 9, 13, 31, 34, 8, 17, 24, 0, 33, 5, 11, 1, 29],
+      "validation_indices": [21, 2, 30, 36, 3, 35, 23, 32],
+      "test_indices": [10, 22, 18, 20, 7, 14, 28, 38]
+    },
+    "sonic_seed42_60_20_20": {
+      "unit": "trajectory",
+      "seed": 42,
+      "train_fraction": 0.6,
+      "validation_fraction": 0.2,
+      "test_fraction": 0.2,
+      "rounding": "numpy round then remainder to test",
+      "train_indices": [84, 55, 66, 67, 45, 39, 22, 44, 10, 0, 18, 30, 97, 33, 77, 4, 93, 78, 12, 31, 76, 89, 26, 42, 70, 15, 40, 72, 9, 96, 11, 91, 64, 28, 83, 5, 47, 53, 35, 16, 81, 34, 7, 43, 73, 27, 19, 94, 25, 62, 49, 13, 24, 3, 17, 38, 8, 79, 6, 65, 36],
+      "validation_indices": [88, 56, 100, 54, 50, 68, 46, 69, 61, 98, 80, 41, 58, 48, 90, 57, 75, 32, 95, 59],
+      "test_indices": [63, 85, 37, 29, 1, 52, 21, 2, 23, 87, 99, 74, 86, 82, 20, 60, 71, 14, 92, 51]
+    }
+  },
+  "config_profiles": {
+    "cylinder_temporal_legacy": {
+      "static_mesh": true,
+      "dimension": "2D",
+      "field_groups": [[0, 1], [2]],
+      "scale_feature_range": null,
+      "m": 9,
+      "n": 9,
+      "k": null,
+      "pad_id": -1,
+      "pad_field_value": 0,
+      "MLP_hidden_spatial": 480,
+      "num_layers_spatial": 12,
+      "embed_dim_spatial": 16,
+      "n_heads_spatial": 8,
+      "block_size_spatial": 2024,
+      "dropout_spatial": 0.0,
+      "variational_spatial": false,
+      "src_len_spatial": 0,
+      "spatial_batch_size": 128,
+      "batch_size": 2,
+      "num_layers": 1,
+      "embed_dim": 1024,
+      "n_heads": 8,
+      "block_size": 2024,
+      "scale_ratio": 8,
+      "src_len": 0,
+      "num_fields": 2,
+      "down_proj": 2,
+      "dropout": 0.1,
+      "exchange_mode": "sea",
+      "pos_encoding_mode": "learnable",
+      "ib_scale_mode": "mlp",
+      "ib_addition_mode": "add",
+      "ib_mlp_layers": 1,
+      "ib_num": 6,
+      "add_info_after_cross": true,
+      "LN_type": "adaln",
+      "SEA_isolate": true,
+      "SEA_mixed": false
+    },
+    "multiphase_proposed_2025": {
+      "static_mesh": true,
+      "dimension": "2D",
+      "field_groups": [[0, 1], [2]],
+      "scale_feature_range": null,
+      "m": 9,
+      "n": 9,
+      "k": null,
+      "pad_id": -1,
+      "pad_field_value": 0,
+      "MLP_hidden_spatial": 624,
+      "num_layers_spatial": 12,
+      "embed_dim_spatial": 32,
+      "n_heads_spatial": 8,
+      "block_size_spatial": 2024,
+      "dropout_spatial": 0.0,
+      "variational_spatial": false,
+      "src_len_spatial": 0,
+      "spatial_batch_size": 128,
+      "batch_size": 4,
+      "num_layers": 1,
+      "embed_dim": 2048,
+      "n_heads": 8,
+      "block_size": 2024,
+      "scale_ratio": 8,
+      "src_len": 0,
+      "num_fields": 2,
+      "down_proj": 2,
+      "dropout": 0.1,
+      "exchange_mode": "sea",
+      "pos_encoding_mode": "learnable",
+      "ib_scale_mode": "mlp",
+      "ib_addition_mode": "add",
+      "ib_mlp_layers": 1,
+      "ib_num": 1,
+      "add_info_after_cross": true,
+      "LN_type": "ln",
+      "SEA_isolate": true,
+      "SEA_mixed": false
+    },
+    "multiphase_baseline_2026": {
+      "static_mesh": true,
+      "dimension": "2D",
+      "field_groups": [[0, 1], [2]],
+      "scale_feature_range": null,
+      "m": 9,
+      "n": 9,
+      "k": null,
+      "pad_id": -1,
+      "pad_field_value": 0,
+      "MLP_hidden_spatial": 624,
+      "num_layers_spatial": 12,
+      "embed_dim_spatial": 32,
+      "n_heads_spatial": 8,
+      "block_size_spatial": 2024,
+      "dropout_spatial": 0.0,
+      "variational_spatial": false,
+      "src_len_spatial": 0,
+      "spatial_batch_size": 128,
+      "batch_size": 4,
+      "num_layers": 1,
+      "embed_dim": 2048,
+      "n_heads": 8,
+      "block_size": 2024,
+      "scale_ratio": 8,
+      "src_len": 0,
+      "num_fields": 2,
+      "down_proj": 2,
+      "dropout": 0.0,
+      "exchange_mode": "sea",
+      "pos_encoding_mode": "learnable",
+      "ib_scale_mode": "mlp",
+      "ib_addition_mode": "add",
+      "ib_mlp_layers": 1,
+      "ib_num": 1,
+      "add_info_after_cross": true,
+      "LN_type": "ln",
+      "SEA_isolate": true,
+      "SEA_mixed": false
+    }
+  },
+  "runs": [
+    {
+      "id": "cylinder_sea_baseline_canonical",
+      "role": "canonical_cylinder_baseline",
+      "case": "cylinder_flow",
+      "method": "SEA spatial backbone plus SEA temporal decoder",
+      "code": {
+        "repository": "./SEA",
+        "revision": "9633fc663ba649b42da7fe08a49a68dc7998fac7",
+        "revision_source": "./SEA/wandb/run-20250828_213601-l58n1g8z/files/config.yaml"
+      },
+      "wandb": {
+        "run_id": "l58n1g8z",
+        "directory": "./SEA/wandb/run-20250828_213601-l58n1g8z",
+        "config": "./SEA/wandb/run-20250828_213601-l58n1g8z/files/config.yaml",
+        "output": "./SEA/wandb/run-20250828_213601-l58n1g8z/files/output.log",
+        "phase": "test"
+      },
+      "data_ref": "cylinder_legacy_101x401",
+      "split_ref": "cylinder_seed42_60_20_20",
+      "config_ref": "cylinder_temporal_legacy",
+      "conditioning_ref": "cylinder_re_nu_polynomial_v1",
+      "horizon": {
+        "available_frames": 401,
+        "conditioning_frames": 1,
+        "predicted_steps": 400
+      },
+      "artifacts": {
+        "spatial_checkpoint": {
+          "path": "./SEA/checkpoints-benchmark/encoder_decoder_cylinder_flow_run1.pt",
+          "sha256": "ea72f4de788c1553c4f686e7ddf64450a9eb1149988af1719f12ea2df35f1e19"
+        },
+        "temporal_checkpoint": {
+          "path": "./SEA/checkpoints-benchmark/temporal_cylinder_flow_run1.pt",
+          "sha256": "03e133263557fdf76c21c6e531f19fb1d5b4528100c526ffcf1970a5526dc678",
+          "selection": "historical minimum one-step validation loss checkpoint used by test run"
+        }
+      },
+      "historical_evidence": [
+        {
+          "scope": "legacy_test_batch_average",
+          "split": "test",
+          "metrics": [
+            {
+              "field": "macro",
+              "name": "decoded_relative_squared_l2",
+              "value": 0.01310410391385075
+            },
+            {
+              "field": "latent_macro",
+              "name": "encoded_relative_squared_l2",
+              "value": 0.002263666538055986
+            }
+          ],
+          "observations": {
+            "per_batch_per_field": [
+              [0.0006, 0.0075, 0.0013],
+              [0.0038, 0.0497, 0.0103],
+              [0.0027, 0.0349, 0.0072]
+            ]
+          },
+          "source": {
+            "path": "./SEA/wandb/run-20250828_213601-l58n1g8z/files/output.log",
+            "lines": [37, 45]
+          },
+          "limitations": [
+            "legacy evaluator averaged minibatch scalars rather than all trajectories uniformly",
+            "per-field vectors are separate minibatches, not dataset aggregates",
+            "single training seed"
+          ]
+        }
+      ],
+      "evaluation": {
+        "supported": true,
+        "ready": true,
+        "field_names": ["u", "v", "p"],
+        "required_input_features": 6,
+        "runtime_source": {
+          "repository": "./SEA-baseline",
+          "revision": "59dffe0c03510e695be9cc26bd637d0a741f6735",
+          "compatibility_basis": "surviving grid-partition SEA implementation matching the baseline spatial checkpoint; recorded training revision remains pinned separately",
+          "temporal_default_restoration": {
+            "recorded_revision": "9633fc663ba649b42da7fe08a49a68dc7998fac7",
+            "source_path": "models/temporal.py",
+            "parameter": "BaseBlockTemporal.ib_num",
+            "recorded_default": 6,
+            "runtime_default": 1,
+            "method": "restore recorded default in isolated worker memory before model construction"
+          }
+        },
+        "known_blockers": [],
+        "archival_notes": [
+          "surviving input_data.npy is [101,1] and is fingerprinted but not used for runtime values",
+          "the cited historical source deterministically reconstructs [101,6] conditioning in memory"
+        ]
+      },
+      "standardized_evaluation": {
+        "status": "completed",
+        "result_json": "./log-specatraformer-submission/experiments/results/cylinder_sea_baseline_canonical__standard_eval_source_conditioning_v3/results.json",
+        "result_json_sha256": "1387c770aa6a3d32ddddb3eae196d90a4385cdad379a895d97bc0a17512d8057",
+        "summary_csv": "./log-specatraformer-submission/experiments/results/cylinder_sea_baseline_canonical__standard_eval_source_conditioning_v3/summary.csv",
+        "summary_csv_sha256": "971060e6bf6e687b2e4446ad5cc3c38af5caa6e3c7bfba55822bd8e36db3f65d",
+        "horizon_csv": "./log-specatraformer-submission/experiments/results/cylinder_sea_baseline_canonical__standard_eval_source_conditioning_v3/horizon_metrics.csv",
+        "horizon_csv_sha256": "49983d1e36c89ddfc86a32f6c70014e059f57d3dfa1402f6aacd2b5b4dd8c5ca",
+        "test_macro": {
+          "relative_squared_l2": {
+            "value": 0.01274044456240505,
+            "ci95": [0.003822235123890391, 0.025607305806830603]
+          },
+          "relative_l2": {
+            "value": 0.0657269332213527,
+            "ci95": [0.04146091550978791, 0.09604163332674236]
+          },
+          "raw_rmse": {
+            "value": 0.03171682155412889,
+            "ci95": [0.019645539647435033, 0.04695175925204214]
+          },
+          "final_step_relative_squared_l2": {
+            "value": 0.012658425723810656,
+            "ci95": [0.003761120886672842, 0.02481243765934377]
+          }
+        }
+      },
+      "paper_usability": {
+        "status": "standardized_test_available",
+        "allowed_use": "standardized baseline result and horizon curve with trajectory-bootstrap intervals and single-training-seed label",
+        "disallowed_use": "do not report slide per-field rows as aggregate test metrics"
+      }
+    },
+    {
+      "id": "cylinder_graphspectralformer_canonical",
+      "role": "canonical_cylinder_proposed",
+      "case": "cylinder_flow",
+      "method": "dense patch-local graph Fourier mixing plus global patch attention and SEA temporal decoder",
+      "code": {
+        "repository": "./SEA",
+        "revision": "00bb57f53cc7a16194fe47422b994a54420275f1",
+        "revision_source": "./SEA/wandb/run-20250907_120342-1ifodcp6/files/config.yaml"
+      },
+      "wandb": {
+        "run_id": "1ifodcp6",
+        "directory": "./SEA/wandb/run-20250907_120342-1ifodcp6",
+        "config": "./SEA/wandb/run-20250907_120342-1ifodcp6/files/config.yaml",
+        "output": "./SEA/wandb/run-20250907_120342-1ifodcp6/files/output.log",
+        "phase": "test"
+      },
+      "data_ref": "cylinder_legacy_101x401",
+      "split_ref": "cylinder_seed42_60_20_20",
+      "config_ref": "cylinder_temporal_legacy",
+      "conditioning_ref": "cylinder_re_nu_polynomial_v1",
+      "horizon": {
+        "available_frames": 401,
+        "conditioning_frames": 1,
+        "predicted_steps": 400
+      },
+      "artifacts": {
+        "spatial_checkpoint": {
+          "path": "./SEA/checkpoints-gft-spectral-local-gft/encoder_decoder_cylinder_flow_run1.pt",
+          "sha256": "437a70123d14d954851479be42f91675d76ce1180bd4c87d37ea834ba6919d1c"
+        },
+        "temporal_checkpoint": {
+          "path": "./SEA/checkpoints-gft-spectral-local-gft/temporal_cylinder_flow_run1.pt",
+          "sha256": "1f542e01ed1873b1c8385846fbc800bc294b0cc6978a78e2b024ce96cbc884c5",
+          "selection": "historical minimum one-step validation loss checkpoint used by test run"
+        }
+      },
+      "historical_evidence": [
+        {
+          "scope": "legacy_test_batch_average",
+          "split": "test",
+          "metrics": [
+            {
+              "field": "macro",
+              "name": "decoded_relative_squared_l2",
+              "value": 0.004862133060106274
+            },
+            {
+              "field": "latent_macro",
+              "name": "encoded_relative_squared_l2",
+              "value": 0.0008969371459291627
+            }
+          ],
+          "observations": {
+            "first_minibatch_per_field": [0.0005, 0.0064, 0.001],
+            "last_minibatch_per_field": [0.0005, 0.0069, 0.0011]
+          },
+          "source": {
+            "path": "./SEA/wandb/run-20250907_120342-1ifodcp6/files/output.log",
+            "lines": [51, 73]
+          },
+          "limitations": [
+            "legacy evaluator averaged minibatch scalars rather than all trajectories uniformly",
+            "slide values are the first test minibatch only",
+            "single training seed"
+          ]
+        }
+      ],
+      "evaluation": {
+        "supported": true,
+        "ready": false,
+        "field_names": ["u", "v", "p"],
+        "required_input_features": 6,
+        "runtime_source": {
+          "repository": "./SEA",
+          "revision": "71c1506ac19ef6032a5ebf17893b042627876bef",
+          "compatibility_basis": "surviving local-GFT spectral-partition implementation matching the proposed spatial checkpoint; recorded training revision remains pinned separately",
+          "temporal_default_restoration": {
+            "recorded_revision": "00bb57f53cc7a16194fe47422b994a54420275f1",
+            "source_path": "models/temporal.py",
+            "parameter": "BaseBlockTemporal.ib_num",
+            "recorded_default": 6,
+            "runtime_default": 1,
+            "method": "restore recorded default in isolated worker memory before model construction"
+          }
+        },
+        "known_blockers": [
+          "exact patch membership/order and U_patch were not persisted in the spatial checkpoint",
+          "recorded Git revision does not contain the uncommitted processor state used by the W&B run"
+        ],
+        "archival_notes": [
+          "surviving input_data.npy is [101,1] and is fingerprinted but not used for runtime values",
+          "the cited historical source deterministically reconstructs [101,6] conditioning in memory"
+        ]
+      },
+      "standardized_evaluation": {
+        "status": "blocked_spatial_preprocessing",
+        "blocker": "./log-specatraformer-submission/experiments/results/cylinder_graphspectralformer_canonical__standard_eval_final_blocker/blocker.json",
+        "blocker_sha256": "1d6fdcc9537221032e95e1a72726b9f020683e1598756c36155315fab812c8d4",
+        "conditioning_status": "resolved",
+        "historical_macro_relative_squared_l2": 0.004862133060106274,
+        "standardized_ci_available": false
+      },
+      "paper_usability": {
+        "status": "historical_only_until_spatial_basis_recovered",
+        "allowed_use": "historical macro test scalar with legacy aggregation and single-seed caveats",
+        "disallowed_use": "do not report compatibility-diagnostic reruns, fabricated confidence intervals, or [0.0005,0.0064,0.0010] as an aggregate test row"
+      }
+    },
+    {
+      "id": "multiphase_sea_baseline_canonical",
+      "role": "canonical_multiphase_baseline",
+      "case": "multiphase_flow",
+      "method": "SEA baseline spatial encoder and SEA temporal decoder",
+      "code": {
+        "repository": "./SEA-baseline",
+        "revision": "59dffe0c03510e695be9cc26bd637d0a741f6735",
+        "revision_source": "./SEA-baseline/wandb/run-20260114_133301-95fn0v75/files/config.yaml",
+        "working_tree_note": "current repository has tracked modifications; evaluator defaults to an immutable git archive of this revision"
+      },
+      "wandb": {
+        "run_id": "95fn0v75",
+        "directory": "./SEA-baseline/wandb/run-20260114_133301-95fn0v75",
+        "config": "./SEA-baseline/wandb/run-20260114_133301-95fn0v75/files/config.yaml",
+        "output": "./SEA-baseline/wandb/run-20260114_133301-95fn0v75/files/output.log",
+        "phase": "training_with_validation"
+      },
+      "data_ref": "multiphase_40x200",
+      "split_ref": "multiphase_seed42_60_20_20",
+      "config_ref": "multiphase_baseline_2026",
+      "horizon": {
+        "available_frames": 200,
+        "conditioning_frames": 1,
+        "predicted_steps": 199
+      },
+      "artifacts": {
+        "spatial_checkpoint": {
+          "path": "./SEA-baseline/checkpoints/encoder_decoder_multiphase_flow_run1.pt",
+          "sha256": "c85e4056c1f7c68dc75e206281c3e488f6ee761991b6c6bc4b92a46b10b9c693"
+        },
+        "temporal_checkpoint": {
+          "path": "./SEA-baseline/checkpoints/temporal_Checkpoint_multiphase_flow_run1.pt",
+          "sha256": "d673a90735921aa6e07edc7f2acffa3bf449a012faecffd4df3227b24ba13d85",
+          "selection": "best validation full-rollout checkpoint"
+        }
+      },
+      "historical_evidence": [
+        {
+          "scope": "validation_checkpoint_selection",
+          "split": "validation",
+          "metrics": [
+            {
+              "field": "macro",
+              "name": "decoded_relative_squared_l2",
+              "value": 1.05499059
+            },
+            {
+              "field": "u",
+              "name": "last_logged_minibatch_relative_squared_l2",
+              "value": 1.3331
+            },
+            {
+              "field": "v",
+              "name": "last_logged_minibatch_relative_squared_l2",
+              "value": 1.7318
+            },
+            {
+              "field": "p",
+              "name": "last_logged_minibatch_relative_squared_l2",
+              "value": 0.1
+            }
+          ],
+          "source": {
+            "path": "./SEA-baseline/wandb/run-20260114_133301-95fn0v75/files/output.log",
+            "lines": [1511, 1519]
+          },
+          "limitations": [
+            "validation, not held-out test",
+            "per-field vector is one validation minibatch",
+            "single training seed"
+          ]
+        }
+      ],
+      "evaluation": {
+        "supported": true,
+        "field_names": ["u", "v", "p"],
+        "required_input_features": 1,
+        "known_blockers": []
+      },
+      "standardized_evaluation": {
+        "status": "completed",
+        "result_json": "./log-specatraformer-submission/experiments/results/multiphase_sea_baseline_canonical__standard_eval_sanitized_v2/results.json",
+        "summary_csv": "./log-specatraformer-submission/experiments/results/multiphase_sea_baseline_canonical__standard_eval_sanitized_v2/summary.csv",
+        "test_macro": {
+          "relative_squared_l2": 1.2308506457380155,
+          "relative_l2": 0.8268581848763129,
+          "raw_rmse": 0.16103148650902321,
+          "final_step_relative_squared_l2": 2.337725800434368
+        }
+      },
+      "paper_usability": {
+        "status": "standardized_test_available",
+        "allowed_use": "paper main table with the exact metric definition, trajectory-bootstrap interval, and single-training-seed label",
+        "disallowed_use": "do not present the historical 1.05499059 validation value as test performance"
+      }
+    },
+    {
+      "id": "multiphase_graphspectralformer_canonical",
+      "role": "canonical_multiphase_proposed",
+      "case": "multiphase_flow",
+      "method": "spectral-clustered dense local graph Fourier encoder and SEA temporal decoder",
+      "code": {
+        "repository": "./SEA",
+        "revision": "71c1506ac19ef6032a5ebf17893b042627876bef",
+        "revision_source": "./SEA/wandb/run-20251230_023426-psuluo80/files/config.yaml"
+      },
+      "wandb": {
+        "run_id": "psuluo80",
+        "directory": "./SEA/wandb/run-20251230_023426-psuluo80",
+        "config": "./SEA/wandb/run-20251230_023426-psuluo80/files/config.yaml",
+        "output": "./SEA/wandb/run-20251230_023426-psuluo80/files/output.log",
+        "phase": "training_with_validation"
+      },
+      "data_ref": "multiphase_40x200",
+      "split_ref": "multiphase_seed42_60_20_20",
+      "config_ref": "multiphase_proposed_2025",
+      "horizon": {
+        "available_frames": 200,
+        "conditioning_frames": 1,
+        "predicted_steps": 199
+      },
+      "artifacts": {
+        "spatial_checkpoint": {
+          "path": "./SEA/checkpoints-multiphase-flow-spectral-clustering-2/encoder_decoder_multiphase_flow_run1.pt",
+          "sha256": "46e83e4426187688050c2f46db7365383eb9895e73b5185791d5e4eec1e4a58f"
+        },
+        "temporal_checkpoint": {
+          "path": "./SEA/checkpoints-multiphase-flow-spectral-clustering-2/temporal_Checkpoint_multiphase_flow_run1.pt",
+          "sha256": "45a0a81ae6f8af4ea607653e34655c1fb144ce9a951446bc99e921ec0ad3b1a2",
+          "selection": "best validation full-rollout checkpoint"
+        }
+      },
+      "historical_evidence": [
+        {
+          "scope": "validation_checkpoint_selection",
+          "split": "validation",
+          "metrics": [
+            {
+              "field": "macro",
+              "name": "decoded_relative_squared_l2",
+              "value": 0.75251054
+            },
+            {
+              "field": "u",
+              "name": "last_logged_minibatch_relative_squared_l2",
+              "value": 0.9379
+            },
+            {
+              "field": "v",
+              "name": "last_logged_minibatch_relative_squared_l2",
+              "value": 1.0887
+            },
+            {
+              "field": "p",
+              "name": "last_logged_minibatch_relative_squared_l2",
+              "value": 0.2309
+            }
+          ],
+          "source": {
+            "path": "./SEA/wandb/run-20251230_023426-psuluo80/files/output.log",
+            "lines": [1705, 1715]
+          },
+          "limitations": [
+            "validation, not held-out test",
+            "per-field vector is one validation minibatch",
+            "single training seed"
+          ]
+        }
+      ],
+      "evaluation": {
+        "supported": true,
+        "field_names": ["u", "v", "p"],
+        "required_input_features": 1,
+        "known_blockers": []
+      },
+      "standardized_evaluation": {
+        "status": "completed",
+        "result_json": "./log-specatraformer-submission/experiments/results/multiphase_graphspectralformer_canonical__standard_eval_sanitized_v2/results.json",
+        "summary_csv": "./log-specatraformer-submission/experiments/results/multiphase_graphspectralformer_canonical__standard_eval_sanitized_v2/summary.csv",
+        "test_macro": {
+          "relative_squared_l2": 0.8175139794174188,
+          "relative_l2": 0.788407765488179,
+          "raw_rmse": 0.1938166941756926,
+          "final_step_relative_squared_l2": 0.9584998643726793
+        }
+      },
+      "paper_usability": {
+        "status": "standardized_test_available",
+        "allowed_use": "paper main table with the exact metric definition, trajectory-bootstrap interval, and single-training-seed label",
+        "disallowed_use": "do not make metric-independent superiority claims: raw RMSE is higher than the baseline despite lower relative squared L2"
+      }
+    },
+    {
+      "id": "multiphase_fallback_metis_legacy",
+      "role": "fallback_older_multiphase_test",
+      "case": "multiphase_flow",
+      "method": "older METIS/GFT configuration using SEA-format tokens",
+      "code": {
+        "repository": "./SEA",
+        "revision": "00bb57f53cc7a16194fe47422b994a54420275f1",
+        "revision_source": "./SEA/wandb/run-20250917_200045-uy5l6g4b/files/config.yaml"
+      },
+      "wandb": {
+        "run_id": "uy5l6g4b",
+        "directory": "./SEA/wandb/run-20250917_200045-uy5l6g4b",
+        "config": "./SEA/wandb/run-20250917_200045-uy5l6g4b/files/config.yaml",
+        "output": "./SEA/wandb/run-20250917_200045-uy5l6g4b/files/output.log",
+        "phase": "test"
+      },
+      "data_ref": "multiphase_40x200",
+      "split_ref": "multiphase_seed42_60_20_20",
+      "horizon": {
+        "available_frames": 200,
+        "conditioning_frames": 1,
+        "predicted_steps": 199
+      },
+      "artifacts": {
+        "spatial_checkpoint": {
+          "path": "./SEA/checkpoints-gft-metis-SEA-data/encoder_decoder_multiphase_flow_run1.pt",
+          "sha256": "616c4d52a9ee334da342dfdc90b2a196d2b2e824c9fb594fe214201287f91ae3"
+        },
+        "temporal_checkpoint": {
+          "path": "./SEA/checkpoints-gft-metis-SEA-data/temporal_multiphase_flow_run1.pt",
+          "sha256": "b6c07a5c635dd19ba85dd26d901531b706485edbdb3c43df939628a0346997df"
+        }
+      },
+      "historical_evidence": [
+        {
+          "scope": "legacy_test_single_batch",
+          "split": "test",
+          "metrics": [
+            {
+              "field": "u",
+              "name": "decoded_relative_squared_l2",
+              "value": 2.3439
+            },
+            {
+              "field": "v",
+              "name": "decoded_relative_squared_l2",
+              "value": 3.6124
+            },
+            {
+              "field": "p",
+              "name": "decoded_relative_squared_l2",
+              "value": 0.3911
+            },
+            {
+              "field": "macro",
+              "name": "decoded_relative_squared_l2",
+              "value": 2.1157977408648585
+            },
+            {
+              "field": "latent_macro",
+              "name": "encoded_relative_squared_l2",
+              "value": 0.07962855696678162
+            }
+          ],
+          "source": {
+            "path": "./SEA/wandb/run-20250917_200045-uy5l6g4b/files/output.log",
+            "lines": [39, 43]
+          },
+          "limitations": [
+            "older architecture, not the canonical proposed checkpoint",
+            "single training seed"
+          ]
+        }
+      ],
+      "evaluation": {
+        "supported": false,
+        "field_names": ["u", "v", "p"],
+        "reason": "retained as fallback historical evidence; canonical models are evaluated first"
+      },
+      "paper_usability": {
+        "status": "fallback_only_corrected_horizon",
+        "allowed_use": "fallback appendix or clearly labeled older-comparison row at 199 predicted steps",
+        "disallowed_use": "do not label as a 400-step result or canonical proposed model"
+      }
+    },
+    {
+      "id": "multiphase_fallback_spectral_legacy",
+      "role": "fallback_older_multiphase_test",
+      "case": "multiphase_flow",
+      "method": "older spectral-clustering GraphSpectralFormer checkpoint",
+      "code": {
+        "repository": "./SEA",
+        "revision": "00bb57f53cc7a16194fe47422b994a54420275f1",
+        "revision_source": "./SEA/wandb/run-20251112_213020-2kf50amk/files/config.yaml"
+      },
+      "wandb": {
+        "run_id": "2kf50amk",
+        "directory": "./SEA/wandb/run-20251112_213020-2kf50amk",
+        "config": "./SEA/wandb/run-20251112_213020-2kf50amk/files/config.yaml",
+        "output": "./SEA/wandb/run-20251112_213020-2kf50amk/files/output.log",
+        "phase": "test"
+      },
+      "data_ref": "multiphase_40x200",
+      "split_ref": "multiphase_seed42_60_20_20",
+      "horizon": {
+        "available_frames": 200,
+        "conditioning_frames": 1,
+        "predicted_steps": 199
+      },
+      "artifacts": {
+        "spatial_checkpoint": {
+          "path": "./SEA/checkpoints-multiphase-flow-spectral-clustering/encoder_decoder_multiphase_flow_run1.pt",
+          "sha256": "46e83e4426187688050c2f46db7365383eb9895e73b5185791d5e4eec1e4a58f"
+        },
+        "temporal_checkpoint": {
+          "path": "./SEA/checkpoints-multiphase-flow-spectral-clustering/temporal_multiphase_flow_run1.pt",
+          "sha256": "a3f917bc6193d277ae8687c5980a21e700428727ba895e48d9eea13c118a8614"
+        }
+      },
+      "historical_evidence": [
+        {
+          "scope": "legacy_test_single_batch",
+          "split": "test",
+          "metrics": [
+            {
+              "field": "u",
+              "name": "decoded_relative_squared_l2",
+              "value": 2.4198
+            },
+            {
+              "field": "v",
+              "name": "decoded_relative_squared_l2",
+              "value": 2.3727
+            },
+            {
+              "field": "p",
+              "name": "decoded_relative_squared_l2",
+              "value": 0.5159
+            },
+            {
+              "field": "macro",
+              "name": "decoded_relative_squared_l2",
+              "value": 1.7694562059951744
+            },
+            {
+              "field": "latent_macro",
+              "name": "encoded_relative_squared_l2",
+              "value": 0.03702704235911369
+            }
+          ],
+          "source": {
+            "path": "./SEA/wandb/run-20251112_213020-2kf50amk/files/output.log",
+            "lines": [39, 44]
+          },
+          "limitations": [
+            "older architecture, not the canonical proposed checkpoint",
+            "single training seed"
+          ]
+        }
+      ],
+      "evaluation": {
+        "supported": false,
+        "field_names": ["u", "v", "p"],
+        "reason": "retained as fallback historical evidence; canonical models are evaluated first"
+      },
+      "paper_usability": {
+        "status": "fallback_only_corrected_horizon",
+        "allowed_use": "fallback appendix or clearly labeled older-comparison row at 199 predicted steps",
+        "disallowed_use": "do not label as a 400-step result or canonical proposed model"
+      }
+    },
+    {
+      "id": "cylinder_ablation_local_gft_grid_partition",
+      "role": "key_cylinder_ablation",
+      "case": "cylinder_flow",
+      "method": "local graph Fourier path without the canonical spectral partition variant",
+      "code": {
+        "repository": "./SEA",
+        "revision": "00bb57f53cc7a16194fe47422b994a54420275f1",
+        "revision_source": "./SEA/wandb/run-20250907_120154-kpt1wiau/files/config.yaml"
+      },
+      "wandb": {
+        "run_id": "kpt1wiau",
+        "directory": "./SEA/wandb/run-20250907_120154-kpt1wiau",
+        "config": "./SEA/wandb/run-20250907_120154-kpt1wiau/files/config.yaml",
+        "output": "./SEA/wandb/run-20250907_120154-kpt1wiau/files/output.log",
+        "phase": "test"
+      },
+      "data_ref": "cylinder_legacy_101x401",
+      "split_ref": "cylinder_seed42_60_20_20",
+      "horizon": {
+        "available_frames": 401,
+        "conditioning_frames": 1,
+        "predicted_steps": 400
+      },
+      "artifacts": {
+        "spatial_checkpoint": {
+          "path": "./SEA/checkpoints-gft-local-gft/encoder_decoder_cylinder_flow_run1.pt",
+          "sha256": "16026012b990c0e2ad84416eb004c360b4b31806b4c8cbffc3c20d1e999a4290"
+        },
+        "temporal_checkpoint": {
+          "path": "./SEA/checkpoints-gft-local-gft/temporal_cylinder_flow_run1.pt",
+          "sha256": "8c84f3d497a62916639a377ac591683550cb6b57b22d93123aa714343ce341b7"
+        }
+      },
+      "historical_evidence": [
+        {
+          "scope": "legacy_test_batch_average",
+          "split": "test",
+          "metrics": [
+            {
+              "field": "macro",
+              "name": "decoded_relative_squared_l2",
+              "value": 0.010534542080059522
+            },
+            {
+              "field": "latent_macro",
+              "name": "encoded_relative_squared_l2",
+              "value": 0.0016750655486248434
+            }
+          ],
+          "observations": {
+            "last_minibatch_per_field": [0.0021, 0.0273, 0.0054]
+          },
+          "source": {
+            "path": "./SEA/wandb/run-20250907_120154-kpt1wiau/files/output.log",
+            "lines": [69, 73]
+          },
+          "limitations": [
+            "legacy batch-average aggregation",
+            "single training seed"
+          ]
+        }
+      ],
+      "evaluation": {
+        "supported": false,
+        "field_names": ["u", "v", "p"],
+        "reason": "manifested for the ablation table; canonical models are implemented first"
+      },
+      "paper_usability": {
+        "status": "conditional_historical_ablation",
+        "allowed_use": "ablation appendix with legacy aggregation caveat",
+        "disallowed_use": "do not mix with standardized rows without rerunning"
+      }
+    },
+    {
+      "id": "cylinder_ablation_metis_gmus_tokens",
+      "role": "key_cylinder_ablation",
+      "case": "cylinder_flow",
+      "method": "METIS partition with older GMUS-style tokenization",
+      "code": {
+        "repository": "./SEA",
+        "revision": "00bb57f53cc7a16194fe47422b994a54420275f1",
+        "revision_source": "./SEA/wandb/run-20250917_170125-nkijzted/files/config.yaml"
+      },
+      "wandb": {
+        "run_id": "nkijzted",
+        "directory": "./SEA/wandb/run-20250917_170125-nkijzted",
+        "config": "./SEA/wandb/run-20250917_170125-nkijzted/files/config.yaml",
+        "output": "./SEA/wandb/run-20250917_170125-nkijzted/files/output.log",
+        "phase": "training_with_validation"
+      },
+      "data_ref": "cylinder_legacy_101x401",
+      "split_ref": "cylinder_seed42_60_20_20",
+      "horizon": {
+        "available_frames": 401,
+        "conditioning_frames": 1,
+        "predicted_steps": 400
+      },
+      "artifacts": {
+        "spatial_checkpoint": {
+          "path": "./SEA/checkpoints-gft-metis-gmusdata/encoder_decoder_cylinder_flow_run1.pt",
+          "sha256": "bf76e96b9450d4820be90a3780a17a82dab9f3514c1cfca953eb75dc930b2bc9"
+        },
+        "temporal_checkpoint": {
+          "path": "./SEA/checkpoints-gft-metis-gmusdata/temporal_cylinder_flow_run1.pt",
+          "sha256": "2f923d16ae5f4ffab337efa0e8352c07b8b3c78dcef01df82fb3222aec6d8fe1"
+        }
+      },
+      "historical_evidence": [
+        {
+          "scope": "final_logged_validation_rollout",
+          "split": "validation",
+          "metrics": [
+            {
+              "field": "macro",
+              "name": "decoded_relative_squared_l2",
+              "value": 0.99458808
+            }
+          ],
+          "source": {
+            "path": "./SEA/wandb/run-20250917_170125-nkijzted/files/output.log",
+            "lines": [1982, 1988]
+          },
+          "limitations": [
+            "validation, not test",
+            "final logged epoch is not necessarily the retained checkpoint",
+            "single training seed"
+          ]
+        }
+      ],
+      "evaluation": {
+        "supported": false,
+        "field_names": ["u", "v", "p"],
+        "reason": "checkpoint provenance does not provide a trustworthy held-out test row"
+      },
+      "paper_usability": {
+        "status": "omit_until_standardized_test",
+        "allowed_use": "architecture-development provenance only",
+        "disallowed_use": "do not place the validation scalar in a test ablation table"
+      }
+    },
+    {
+      "id": "cylinder_ablation_spectral_partition_sea_tokens",
+      "role": "key_cylinder_ablation",
+      "case": "cylinder_flow",
+      "method": "spectral partition with SEA-format tokens",
+      "code": {
+        "repository": "./SEA",
+        "revision": "00bb57f53cc7a16194fe47422b994a54420275f1",
+        "revision_source": "./SEA/wandb/run-20250911_145549-5ett5t6p/files/wandb-metadata.json"
+      },
+      "wandb": {
+        "run_id": "5ett5t6p",
+        "directory": "./SEA/wandb/run-20250911_145549-5ett5t6p",
+        "config": null,
+        "output": "./SEA/wandb/run-20250911_145549-5ett5t6p/files/output.log",
+        "phase": "incomplete_training_with_validation"
+      },
+      "data_ref": "cylinder_legacy_101x401",
+      "split_ref": "cylinder_seed42_60_20_20",
+      "horizon": {
+        "available_frames": 401,
+        "conditioning_frames": 1,
+        "predicted_steps": 400
+      },
+      "artifacts": {
+        "spatial_checkpoint": {
+          "path": "./SEA/checkpoints-gft-spectral-SEA-data/encoder_decoder_cylinder_flow_run1.pt",
+          "sha256": "3215d8c491906d155b18665854d1729d12814fa82e569d6bc36609211d547a36"
+        },
+        "temporal_checkpoint": {
+          "path": "./SEA/checkpoints-gft-spectral-SEA-data/temporal_cylinder_flow_run1.pt",
+          "sha256": "c885d445416d918b850caf67f0ce3f17e42d8c8dfda3bfa69919753474f1226c"
+        }
+      },
+      "historical_evidence": [
+        {
+          "scope": "incomplete_validation_run",
+          "split": "validation",
+          "metrics": [],
+          "source": {
+            "path": "./SEA/wandb/run-20250911_145549-5ett5t6p/files/output.log",
+            "lines": [1, 653]
+          },
+          "limitations": [
+            "run stops at epoch 890 of 3000",
+            "W&B config is absent",
+            "no held-out test",
+            "checkpoint-to-log selection cannot be verified"
+          ]
+        }
+      ],
+      "evaluation": {
+        "supported": false,
+        "field_names": ["u", "v", "p"],
+        "reason": "incomplete run and ambiguous checkpoint selection"
+      },
+      "paper_usability": {
+        "status": "omit",
+        "allowed_use": "provenance note only",
+        "disallowed_use": "no paper metric is defensible"
+      }
+    },
+    {
+      "id": "sonic_graphspectralformer_negative",
+      "role": "sonic_negative_result",
+      "case": "sonic_flow",
+      "method": "legacy spectral-clustering GraphSpectralFormer sonic attempt",
+      "code": {
+        "repository": "./SEA",
+        "revision": "00bb57f53cc7a16194fe47422b994a54420275f1",
+        "revision_source": "./SEA/wandb/run-20250920_220949-yzsksa12/files/config.yaml"
+      },
+      "wandb": {
+        "run_id": "yzsksa12",
+        "directory": "./SEA/wandb/run-20250920_220949-yzsksa12",
+        "config": "./SEA/wandb/run-20250920_220949-yzsksa12/files/config.yaml",
+        "output": "./SEA/wandb/run-20250920_220949-yzsksa12/files/output.log",
+        "phase": "training_with_validation"
+      },
+      "data_ref": "sonic_101x40",
+      "split_ref": "sonic_seed42_60_20_20",
+      "horizon": {
+        "available_frames": 40,
+        "conditioning_frames": 1,
+        "predicted_steps": 39
+      },
+      "artifacts": {
+        "spatial_checkpoint": {
+          "path": "./SEA/checkpoints-sonic-flow-spectral-clustering/encoder_decoder_sonic_flow_run1.pt",
+          "sha256": "582a939ace557d91a09714eb8a7ce1028b68d3a1c24cf42c2f37f75ebb69c489"
+        },
+        "temporal_checkpoint": {
+          "path": "./SEA/checkpoints-sonic-flow-spectral-clustering/temporal_sonic_flow_run2.pt",
+          "sha256": "8339ef8394055b5e5ac61f96aab576ae7348cb0218b13464f3dd5a651d549b8d"
+        }
+      },
+      "historical_evidence": [
+        {
+          "scope": "final_step_of_last_validation_minibatch",
+          "split": "validation",
+          "metrics": [
+            {
+              "field": "u",
+              "name": "decoded_relative_squared_l2",
+              "value": 0.5032647070661035
+            },
+            {
+              "field": "v",
+              "name": "decoded_relative_squared_l2",
+              "value": 3.023782440786575
+            },
+            {
+              "field": "p",
+              "name": "decoded_relative_squared_l2",
+              "value": 0.04467643260651665
+            },
+            {
+              "field": "T",
+              "name": "decoded_relative_squared_l2",
+              "value": 0.007445357570811586
+            },
+            {
+              "field": "field_5",
+              "name": "decoded_relative_squared_l2",
+              "value": 0.023753610477556496
+            },
+            {
+              "field": "field_6",
+              "name": "decoded_relative_squared_l2",
+              "value": 1.927875930017538e-12
+            },
+            {
+              "field": "field_7",
+              "name": "decoded_relative_squared_l2",
+              "value": 0.04366685906403959
+            },
+            {
+              "field": "field_8",
+              "name": "decoded_relative_squared_l2",
+              "value": 0.01751089248554761
+            }
+          ],
+          "source": {
+            "path": "./SEA/checkpoints-sonic-flow-spectral-clustering/rollout_error_sonic_flow_run2.csv",
+            "lines": [40, 40]
+          },
+          "limitations": [
+            "validation, not test",
+            "one final timestep from one retained minibatch",
+            "slide reported only four of eight fields",
+            "39 predicted steps, not 40",
+            "single training seed"
+          ]
+        }
+      ],
+      "evaluation": {
+        "supported": false,
+        "field_names": ["u", "v", "p", "T", "field_5", "field_6", "field_7", "field_8"],
+        "reason": "phase-two evaluator intentionally supports canonical cylinder and multiphase first"
+      },
+      "paper_usability": {
+        "status": "negative_result_only",
+        "allowed_use": "limitations or negative-result discussion with all eight values and exact validation/final-step provenance",
+        "disallowed_use": "never use as positive evidence or call it a 40-step held-out test"
+      }
+    }
+  ]
+}
